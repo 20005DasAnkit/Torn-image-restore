@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="upload-container">
+
+    <!-- HEADER -->
+    <div class="upload-top">
+        <h2>Upload</h2>
+
+        <div class="tabs">
+            <span class="active">All Images</span>
+            <span>Annotated</span>
+            <span>Not Annotated</span>
+        </div>
+
+        <button class="add-btn">Add classes/categories</button>
+    </div>
+
+    <!-- FORM -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- DROP ZONE -->
+        <div class="upload-box" id="dropZone">
+            <div class="upload-content">
+                <div class="upload-icon">☁</div>
+                <p>Drag & Drop Images</p>
+                <span>OR</span>
+
+                <button type="button" onclick="fileInput.click()" class="select-btn">
+                    Select Files
+                </button>
+
+                <input type="file" name="image" id="fileInput" multiple hidden>
+            </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="upload-btn">Upload</button>
+
+        <!-- ERROR -->
+        <p style="color:red;">{{ error }}</p>
+    </form>
+
+    <!-- FILE INFO -->
+    <div class="file-info">
+        <span>Images: JPG, PNG</span>
+        <span>Annotations: JSON (future)</span>
+        <span>Video: MP4 (future)</span>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-grid" id="previewGrid"></div>
+
+    <!-- RESULT -->
+    {% if uploaded_list %}
+        <h3>Uploaded Images</h3>
+        <div class="preview-grid">
+            {% for img in uploaded_list %}
+                <img src="{{ img }}">
+            {% endfor %}
+        </div>
+
+        <!-- ACCURACY -->
+        <div class="accuracy-box">
+            <h3>Accuracy: {{ accuracy }}%</h3>
+
+            <div class="progress-bar">
+                <div class="progress" style="width: {{ accuracy }}%;">
+                    {{ accuracy }}%
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
+<script>
+const dropZone = document.getElementById("dropZone");
+const fileInput = document.getElementById("fileInput");
+const previewGrid = document.getElementById("previewGrid");
+
+// Click to open file dialog
+dropZone.onclick = () => fileInput.click();
+
+// File select preview
+fileInput.onchange = () => previewFiles(fileInput.files);
+
+// Drag over
+dropZone.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropZone.classList.add("dragover");
+});
+
+// Drag leave
+dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+});
+
+// 🔥 FIXED DROP (IMPORTANT)
+dropZone.addEventListener("drop", function(e) {
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    const dt = new DataTransfer();
+
+    for (let file of e.dataTransfer.files) {
+        dt.items.add(file);
+    }
+
+    fileInput.files = dt.files;
+
+    previewFiles(dt.files);
+});
+
+// Preview images
+function previewFiles(files) {
+    previewGrid.innerHTML = "";
+
+    for (let file of files) {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            const img = document.createElement("img");
+            img.src = reader.result;
+            previewGrid.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
+</script>
+
+{% endblock %}

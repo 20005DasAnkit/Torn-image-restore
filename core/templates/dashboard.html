@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+.dashboard-title {
+    text-align: center;
+    font-size: 32px;
+    color: #00c3ff;
+    margin-bottom: 30px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.05);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0,195,255,0.3);
+}
+
+.card h1 {
+    font-size: 32px;
+}
+
+.chart-box {
+    margin-top: 30px;
+    height: 300px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.gallery {
+    margin-top: 30px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.05);
+}
+</style>
+
+<div class="dashboard-title">Dashboard</div>
+
+<!-- CARDS -->
+<div class="dashboard-grid">
+    <div class="card">
+        <h3>Total Uploads</h3>
+        <h1>{{ total }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Restored Images</h3>
+        <h1>{{ total }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Gallery</h3>
+        <h1>{{ total }}</h1>
+    </div>
+</div>
+
+<!-- CHART -->
+<div class="chart-box">
+    {% if total == 0 %}
+        <p>No data yet</p>
+    {% else %}
+        <canvas id="myChart"></canvas>
+    {% endif %}
+</div>
+
+<!-- RECENT IMAGES -->
+<div class="gallery">
+    <h2>Recent Uploads</h2>
+
+    <div class="gallery-grid">
+        {% for img in recent_images %}
+            <img src="{{ MEDIA_URL }}{{ img }}">
+        {% empty %}
+            <p>No uploads yet</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+{% if total != 0 %}
+
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ labels|safe }},
+        datasets: [{
+            label: 'Uploads',
+            data: {{ data|safe }},
+            borderColor: '#00c3ff',
+            backgroundColor: 'rgba(0,195,255,0.2)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: { color: '#fff' }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: '#aaa' }
+            },
+            y: {
+                ticks: { color: '#aaa' },
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+{% endif %}
+</script>
+
+{% endblock %}
