@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form method="POST" action="{% url 'delete_images' %}">
+    {% csrf_token %}
+
+    <div class="gallery-header">
+        <h2>Gallery</h2>
+
+        <div class="actions">
+            <button type="button" onclick="toggleSelectAll()" class="select-btn">
+                Select All
+            </button>
+
+            <button type="submit" class="delete-btn">
+                Delete Selected
+            </button>
+        </div>
+    </div>
+
+    <div class="gallery-grid">
+        {% for img in images %}
+        <div class="img-card">
+            <input type="checkbox" name="images" value="{{ img }}" class="img-check">
+            <img src="{{ MEDIA_URL }}{{ img }}">
+        </div>
+        {% empty %}
+            <p>No images found</p>
+        {% endfor %}
+    </div>
+
+</form>
+
+<script>
+let allSelected = false;
+
+function toggleSelectAll() {
+    const checkboxes = document.querySelectorAll('.img-check');
+    const btn = document.querySelector('.select-btn');
+
+    allSelected = !allSelected;
+
+    checkboxes.forEach(cb => cb.checked = allSelected);
+
+    btn.innerText = allSelected ? "Unselect All" : "Select All";
+}
+</script>
+
+{% endblock %}

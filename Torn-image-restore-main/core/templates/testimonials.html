@@ -1,0 +1,369 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+/* MAIN */
+.main-content{
+    flex:1;
+    padding:40px;
+    overflow:hidden;
+}
+
+/* SECTION */
+.testimonials{
+    max-width:1200px;
+    margin:auto;
+    text-align:center;
+}
+
+/* TITLE */
+.testimonials h2{
+    color:#00c3ff;
+    font-size:50px;
+    margin-bottom:20px;
+}
+
+.testimonials p{
+    color:#9ca3af;
+    font-size:20px;
+    margin-bottom:50px;
+}
+
+/* SLIDER WRAPPER */
+.slider-wrapper{
+    position:relative;
+    overflow:hidden;
+    width:100%;
+}
+
+/* SLIDER */
+.slider{
+    display:flex;
+    gap:25px;
+    transition:transform 0.5s ease;
+}
+
+/* CARD */
+.card{
+    min-width:340px;
+    padding:35px;
+    border-radius:20px;
+
+    background:rgba(15,23,42,0.6);
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(0,195,255,0.2);
+
+    transition:0.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 10px 30px rgba(0,195,255,0.2);
+}
+
+/* IMAGE */
+.card img{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #00c3ff;
+    margin-bottom:20px;
+}
+
+/* STARS */
+.stars{
+    color:gold;
+    font-size:24px;
+    margin-bottom:15px;
+}
+
+/* TEXT */
+.card p{
+    color:#cbd5e1;
+    font-size:17px;
+    line-height:1.7;
+    min-height:100px;
+}
+
+/* NAME */
+.card h4{
+    color:#00c3ff;
+    font-size:28px;
+    margin-top:20px;
+}
+
+/* ROLE */
+.card span{
+    color:#9ca3af;
+    font-size:18px;
+}
+
+/* ARROWS */
+.arrow{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:100;
+
+    width:55px;
+    height:55px;
+
+    border:none;
+    border-radius:50%;
+
+    background:#00c3ff;
+    color:black;
+
+    font-size:28px;
+    cursor:pointer;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    box-shadow:0 0 20px rgba(0,195,255,0.4);
+}
+
+.arrow:hover{
+    background:white;
+}
+
+/* FIX LEFT BUTTON */
+.arrow.left{
+    left:0;
+}
+
+/* FIX RIGHT BUTTON */
+.arrow.right{
+    right:0;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+    .card{
+        min-width:90%;
+    }
+
+}
+
+</style>
+
+
+<div class="main-content">
+
+    <div class="testimonials">
+
+        <h2>What Clients Say</h2>
+
+        <p>
+            We use advanced AI to restore old, damaged, and blurred images.
+            Here’s what users say about our platform.
+        </p>
+
+        <div class="slider-wrapper">
+
+            <!-- LEFT -->
+            <button class="arrow left"
+                    onclick="moveSlide(-1)">
+                ❮
+            </button>
+
+            <!-- SLIDER -->
+            <div class="slider" id="slider">
+
+                <!-- CARD 1 -->
+                <div class="card">
+
+                    <img src="https://randomuser.me/api/portraits/women/11.jpg">
+
+                    <div class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+
+                    <p>
+                        “This AI restored my grandfather’s photo beautifully.
+                        I was honestly shocked by the quality.”
+                    </p>
+
+                    <h4>Ananya Roy</h4>
+
+                    <span>Photographer</span>
+
+                </div>
+
+
+                <!-- CARD 2 -->
+                <div class="card">
+
+                    <img src="https://randomuser.me/api/portraits/men/12.jpg">
+
+                    <div class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+
+                    <p>
+                        “The restoration was incredibly fast and the details
+                        looked amazingly realistic.”
+                    </p>
+
+                    <h4>Arjun Mehta</h4>
+
+                    <span>Software Engineer</span>
+
+                </div>
+
+
+                <!-- CARD 3 -->
+                <div class="card">
+
+                    <img src="https://randomuser.me/api/portraits/women/13.jpg">
+
+                    <div class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+
+                    <p>
+                        “I restored my childhood memories in seconds.
+                        This platform feels futuristic.”
+                    </p>
+
+                    <h4>Sneha Kapoor</h4>
+
+                    <span>Artist</span>
+
+                </div>
+
+
+                <!-- CARD 4 -->
+                <div class="card">
+
+                    <img src="https://randomuser.me/api/portraits/men/14.jpg">
+
+                    <div class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+
+                    <p>
+                        “Clean interface, powerful AI, and excellent output.
+                        Highly recommended for old photos.”
+                    </p>
+
+                    <h4>Rahul Sen</h4>
+
+                    <span>UI Designer</span>
+
+                </div>
+
+
+                <!-- CARD 5 -->
+                <div class="card">
+
+                    <img src="https://randomuser.me/api/portraits/women/15.jpg">
+
+                    <div class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+
+                    <p>
+                        “The blur removal quality is outstanding.
+                        My family loved the restored pictures.”
+                    </p>
+
+                    <h4>Ishita Das</h4>
+
+                    <span>Student</span>
+
+                </div>
+
+
+                <!-- CARD 6 -->
+                <div class="card">
+
+                    <img src="https://randomuser.me/api/portraits/men/16.jpg">
+
+                    <div class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+
+                    <p>
+                        “One of the best AI restoration tools I’ve used.
+                        Smooth, modern, and extremely accurate.”
+                    </p>
+
+                    <h4>Karan Malhotra</h4>
+
+                    <span>Developer</span>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+            <button class="arrow right"
+                    onclick="moveSlide(1)">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let index = 0;
+
+const slider = document.getElementById("slider");
+
+const cards = document.querySelectorAll(".card");
+
+const total = cards.length;
+
+/* MOVE FUNCTION */
+
+function moveSlide(step){
+
+    index += step;
+
+    if(index < 0){
+        index = total - 1;
+    }
+
+    if(index >= total){
+        index = 0;
+    }
+
+    slider.style.transform =
+    `translateX(-${index * 365}px)`;
+
+}
+
+/* AUTO SLIDE */
+
+let auto = setInterval(() => {
+    moveSlide(1);
+},3000);
+
+/* PAUSE ON HOVER */
+
+slider.addEventListener("mouseenter", () => {
+    clearInterval(auto);
+});
+
+slider.addEventListener("mouseleave", () => {
+
+    auto = setInterval(() => {
+        moveSlide(1);
+    },3000);
+
+});
+
+</script>
+
+{% endblock %}

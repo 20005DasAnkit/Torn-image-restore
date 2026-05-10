@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Restore</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: white;
+        }
+
+        .layout {
+            display: flex;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 12px;
+            margin: 5px 0;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover {
+            background: linear-gradient(45deg,#3b82f6,#9333ea);
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 240px;
+            width: calc(100% - 240px);
+            padding: 30px 50px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>AI Restore</h2>
+        <a href="/">Home</a>
+        <a href="/upload/">Upload</a>
+        <a href="/dashboard/">Dashboard</a>
+        <a href="/profile/">Profile</a>
+        <a href="/gallery/">Gallery</a>
+        <a href="/testimonials/">Testimonials</a>
+        <a href="/faq/">FAQ</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</div>
+
+</body>
+</html>
