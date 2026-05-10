@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- HERO -->
+<div class="hero" style="background: url('{% static "hero.jpg" %}') center/cover no-repeat;">
+
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+
+        <h1>AI Face Restoration</h1>
+
+        <p class="subtitle">
+            Transform old, blurred memories into crystal clear images using AI.
+        </p>
+
+        <div class="cta-group">
+            <a href="/upload/" class="btn-primary">Start Restoring</a>
+            <a href="/gallery/" class="btn-secondary">View Gallery</a>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+            <div class="stat-box">
+                <h2>{{ total_images }}</h2>
+                <p>Images Processed</p>
+            </div>
+
+            <div class="stat-box">
+                <h2>99%</h2>
+                <p>Accuracy</p>
+            </div>
+
+            <div class="stat-box">
+                <h2>⚡</h2>
+                <p>Fast AI</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- FEATURES -->
+<div class="features">
+
+    <div class="feature-card">
+        <h3>🧠 AI Powered</h3>
+        <p>Uses GAN-based deep learning for reconstruction.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>⚡ Instant Results</h3>
+        <p>Upload and restore images in seconds.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>🎯 High Accuracy</h3>
+        <p>Maintains identity while improving clarity.</p>
+    </div>
+
+</div>
+
+<!-- RECENT -->
+<div class="recent">
+
+    <h2>Recent Restorations</h2>
+
+    <div class="recent-grid">
+        {% for img in recent_images %}
+            <img src="{{ MEDIA_URL }}{{ img }}">
+        {% empty %}
+            <p>No images yet</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

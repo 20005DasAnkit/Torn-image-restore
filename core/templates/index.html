@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Face Restoration</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+        }
+
+        /* HERO */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url('https://images.unsplash.com/photo-1522071820081-009f0129c71c');
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background: #00c3ff;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        /* SECTION */
+        .section {
+            padding: 60px;
+            text-align: center;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            width: 30%;
+            padding: 20px;
+        }
+
+        /* UPLOAD */
+        .upload {
+            background: #111;
+            color: white;
+            padding: 50px;
+        }
+
+        /* LOADING */
+        .loader {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 5px solid #ccc;
+            border-top: 5px solid #00c3ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* IMAGE */
+        img {
+            width: 300px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+        /* COMPARISON */
+        .compare {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+    </style>
+
+    <script>
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+    </script>
+
+</head>
+<body>
+
+<!-- 🔥 HERO -->
+<div class="hero">
+    <h1>AI Face Restoration</h1>
+    <p>Restore damaged, blurred, or old facial images using GAN-powered AI technology.</p>
+    <a href="#upload"><button class="btn">Try Now</button></a>
+</div>
+
+<!-- 🔥 FEATURES -->
+<div class="section">
+    <h2>Why Choose Our AI?</h2>
+    <div class="features">
+        <div class="feature">
+            <h3>Deep Learning</h3>
+            <p>Uses GAN models for realistic face reconstruction.</p>
+        </div>
+        <div class="feature">
+            <h3>Fast Processing</h3>
+            <p>Instant restoration with optimized backend.</p>
+        </div>
+        <div class="feature">
+            <h3>High Accuracy</h3>
+            <p>Preserves identity and facial details.</p>
+        </div>
+    </div>
+</div>
+
+<!-- 🔥 UPLOAD -->
+<div id="upload" class="upload">
+    <h2>Upload Image</h2>
+
+    <form method="POST" enctype="multipart/form-data" action="{% url 'upload' %}" onsubmit="showLoader()">
+        {% csrf_token %}
+        <input type="file" name="image" required>
+        <br><br>
+        <button class="btn" type="submit">Restore Face</button>
+    </form>
+
+    <!-- LOADING -->
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+        <p>AI is restoring the face...</p>
+    </div>
+
+    <!-- RESULTS -->
+    {% if uploaded and restored %}
+        <h2>Result</h2>
+
+        <div class="compare">
+            <div>
+                <h3>Before</h3>
+                <img src="{{ uploaded }}">
+            </div>
+
+            <div>
+                <h3>After</h3>
+                <img src="{{ restored }}">
+                <br>
+                <a href="{{ restored }}" download>
+                    <button class="btn">Download</button>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

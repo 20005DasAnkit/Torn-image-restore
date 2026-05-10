@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+/* MAIN CONTENT (aligned with sidebar layout) */
+.main-content {
+    flex: 1;
+    padding: 40px;
+}
+
+/* SECTION */
+.testimonials {
+    max-width: 1100px;
+    margin: auto;
+    text-align: center;
+}
+
+/* TITLE */
+.testimonials h2 {
+    color: #00c3ff;
+    font-size: 36px;
+}
+
+.testimonials p {
+    color: #9ca3af;
+    margin-bottom: 30px;
+}
+
+/* SLIDER WRAPPER */
+.slider-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+/* SLIDER */
+.slider {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+/* GLASS CARD */
+.card {
+    min-width: 320px;
+    margin: 0 15px;
+    padding: 30px;
+    border-radius: 15px;
+
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 195, 255, 0.2);
+
+    text-align: center;
+    transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0,195,255,0.2);
+}
+
+/* IMAGE */
+.card img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid #00c3ff;
+    margin-bottom: 15px;
+}
+
+/* TEXT */
+.card p {
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+/* NAME */
+.card h4 {
+    color: #00c3ff;
+    margin-top: 10px;
+}
+
+/* ROLE */
+.card span {
+    color: #9ca3af;
+}
+
+/* STARS */
+.stars {
+    color: gold;
+    margin-bottom: 10px;
+}
+
+/* ARROWS */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #00c3ff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.arrow:hover {
+    opacity: 1;
+}
+
+.arrow.left { left: 10px; }
+.arrow.right { right: 10px; }
+
+</style>
+
+
+<div class="main-content">
+
+    <div class="testimonials">
+
+        <h2>What Clients Say</h2>
+
+        <p>
+            We use advanced AI to restore old, damaged, and blurred images.
+            Here’s what users say about our platform.
+        </p>
+
+        <div class="slider-wrapper">
+
+            <!-- LEFT -->
+            <button class="arrow left" onclick="moveSlide(-1)">❮</button>
+
+            <!-- SLIDER -->
+            <div class="slider" id="slider">
+
+                <!-- CARD 1 -->
+                <div class="card">
+                    <img src="https://randomuser.me/api/portraits/women/1.jpg">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>“This AI restored my old family photo perfectly. It feels like magic!”</p>
+                    <h4>Riya Sharma</h4>
+                    <span>Student</span>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="card">
+                    <img src="https://randomuser.me/api/portraits/women/2.jpg">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>“Amazing quality! The restored image looked sharper than expected.”</p>
+                    <h4>Neha Patel</h4>
+                    <span>Designer</span>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="card">
+                    <img src="https://randomuser.me/api/portraits/men/3.jpg">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>“Super fast and easy to use. This project is impressive!”</p>
+                    <h4>Rahul Verma</h4>
+                    <span>Developer</span>
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+            <button class="arrow right" onclick="moveSlide(1)">❯</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let index = 0;
+const slider = document.getElementById("slider");
+const total = document.querySelectorAll(".card").length;
+
+/* MOVE */
+function moveSlide(step) {
+    index += step;
+
+    if(index < 0) index = total - 1;
+    if(index >= total) index = 0;
+
+    slider.style.transform = `translateX(-${index * 350}px)`;
+}
+
+/* AUTO SLIDE */
+let auto = setInterval(() => moveSlide(1), 3000);
+
+/* PAUSE ON HOVER */
+slider.addEventListener("mouseenter", () => clearInterval(auto));
+slider.addEventListener("mouseleave", () => {
+    auto = setInterval(() => moveSlide(1), 3000);
+});
+
+</script>
+
+{% endblock %}
