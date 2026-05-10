@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 1;
+    padding: 40px;
+}
+
+/* SECTION */
+.faq-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* TITLE */
+.faq-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.faq-title h2 {
+    color: #00c3ff;
+    font-size: 36px;
+}
+
+.faq-title p {
+    color: #9ca3af;
+}
+
+/* FAQ ITEM */
+.faq-item {
+    margin-bottom: 15px;
+    border-radius: 12px;
+
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,195,255,0.2);
+
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+.faq-item:hover {
+    box-shadow: 0 5px 20px rgba(0,195,255,0.2);
+}
+
+/* QUESTION */
+.faq-question {
+    padding: 18px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #e5e7eb;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ICON */
+.faq-question span {
+    font-size: 20px;
+    color: #00c3ff;
+}
+
+/* ANSWER */
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    color: #9ca3af;
+    transition: all 0.4s ease;
+}
+
+/* ACTIVE */
+.faq-item.active .faq-answer {
+    max-height: 200px;
+    padding: 15px 20px;
+}
+
+.faq-item.active span {
+    transform: rotate(45deg);
+}
+
+/* SEARCH BAR */
+.faq-search {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.faq-search input {
+    width: 60%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+
+    background: rgba(255,255,255,0.05);
+    color: white;
+}
+
+</style>
+
+
+<div class="main-content">
+
+    <div class="faq-container">
+
+        <!-- TITLE -->
+        <div class="faq-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Everything you need to know about AI Restore</p>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="faq-search">
+            <input type="text" placeholder="Search questions..." onkeyup="searchFAQ(this)">
+        </div>
+
+        <!-- FAQ LIST -->
+
+        <div class="faq-item">
+            <div class="faq-question">
+                What is AI Restore?
+                <span>+</span>
+            </div>
+            <div class="faq-answer">
+                AI Restore is a platform that uses advanced AI to repair, enhance, and restore old or damaged images automatically.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Is the service free?
+                <span>+</span>
+            </div>
+            <div class="faq-answer">
+                Yes, basic features are free. Advanced AI restoration features may be added in future premium versions.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                What image formats are supported?
+                <span>+</span>
+            </div>
+            <div class="faq-answer">
+                You can upload JPG, PNG, and JPEG images for restoration.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Is my data safe?
+                <span>+</span>
+            </div>
+            <div class="faq-answer">
+                Yes, all uploaded images are securely stored and not shared with third parties.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ACCORDION */
+document.querySelectorAll(".faq-question").forEach(q => {
+    q.addEventListener("click", () => {
+        const item = q.parentElement;
+
+        document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+        });
+
+        item.classList.toggle("active");
+    });
+});
+
+/* SEARCH FILTER */
+function searchFAQ(input) {
+    const filter = input.value.toLowerCase();
+    const items = document.querySelectorAll(".faq-item");
+
+    items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        item.style.display = text.includes(filter) ? "block" : "none";
+    });
+}
+
+</script>
+
+{% endblock %}
