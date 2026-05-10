@@ -151,25 +151,25 @@
     </div>
 
     <!-- RESULTS -->
-    {% if uploaded and restored %}
-        <h2>Result</h2>
+{% if uploaded and restored %}
+    <h2>Result</h2>
 
-        <div class="compare">
-            <div>
-                <h3>Before</h3>
-                <img src="{{ uploaded }}">
-            </div>
-
-            <div>
-                <h3>After</h3>
-                <img src="{{ restored }}">
-                <br>
-                <a href="{{ restored }}" download>
-                    <button class="btn">Download</button>
-                </a>
-            </div>
+    <div class="compare">
+        <div>
+            <h3>Before</h3>
+            <img src="{{ uploaded }}">
         </div>
-    {% endif %}
+
+        <div>
+            <h3>After</h3>
+            <img src="{{ restored }}">
+            <br>
+            <a href="{{ restored }}" download>
+                <button class="btn">Download</button>
+            </a>
+        </div>
+    </div>
+{% endif %}
 </div>
 
 </body>

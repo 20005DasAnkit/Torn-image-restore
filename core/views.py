@@ -1,3 +1,5 @@
+from .ml.restore import restore_image
+import uuid
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
@@ -37,6 +39,7 @@ def home(request):
 
 # UPLOAD
 def upload(request):
+
     if request.method == 'POST':
 
         files = request.FILES.getlist('image')
@@ -47,16 +50,54 @@ def upload(request):
             })
 
         fs = FileSystemStorage()
-        uploaded_urls = []
+
+        uploaded_data = []
 
         for file in files:
-            filename = fs.save(file.name, file)
-            uploaded_urls.append(fs.url(filename))
+
+            # unique filename
+            unique_name = f"{uuid.uuid4()}_{file.name}"
+
+            # save original
+            uploaded_filename = fs.save(
+                f"uploads/{unique_name}",
+                file
+            )
+
+            uploaded_path = os.path.join(
+                settings.MEDIA_ROOT,
+                uploaded_filename
+            )
+
+            # restored filename
+            restored_filename = f"restored/restored_{unique_name}"
+
+            restored_path = os.path.join(
+                settings.MEDIA_ROOT,
+                restored_filename
+            )
+
+            # create restored folder if not exists
+            os.makedirs(
+                os.path.dirname(restored_path),
+                exist_ok=True
+            )
+
+            # AI restoration
+            restore_image(
+                uploaded_path,
+                restored_path
+            )
+
+            uploaded_data.append({
+                'original': fs.url(uploaded_filename),
+                'restored': fs.url(restored_filename)
+            })
 
         accuracy = random.randint(85, 99)
 
         return render(request, 'upload.html', {
-            'uploaded_list': uploaded_urls,
+            'uploaded_data': uploaded_data,
             'accuracy': accuracy
         })
 
@@ -64,39 +105,121 @@ def upload(request):
 
 # GALLERY
 def gallery(request):
+
     images = []
 
     if os.path.exists(settings.MEDIA_ROOT):
-        for file in os.listdir(settings.MEDIA_ROOT):
-            images.append(file)   # 🔥 store filename only
 
-    return render(request, 'gallery.html', {'images': images})
+        for root, dirs, files in os.walk(settings.MEDIA_ROOT):
+
+            for file in files:
+
+                # skip hidden/system files
+                if file.startswith('.'):
+
+                    continue
+
+                relative_path = os.path.relpath(
+
+                    os.path.join(root, file),
+                    settings.MEDIA_ROOT
+
+                )
+
+                images.append(relative_path)
+
+    return render(request, 'gallery.html', {
+
+        'images': images
+
+    })
 
 
 # DASHBOARD
 def dashboard(request):
+
     media_path = settings.MEDIA_ROOT
 
     images = []
+
     file_dates = []
 
     if os.path.exists(media_path):
-        for f in os.listdir(media_path):
-            full_path = os.path.join(media_path, f)
 
-            if os.path.isfile(full_path):
-                images.append(f)
+        for root, dirs, files in os.walk(media_path):
 
-                # 🔥 get file creation time
-                timestamp = os.path.getmtime(full_path)
-                dt = datetime.fromtimestamp(timestamp)
+            for f in files:
 
-                file_dates.append(dt.strftime('%a'))  # Mon, Tue...
+                # skip hidden/system files
+                if f.startswith('.'):
+
+                    continue
+
+                full_path = os.path.join(root, f)
+
+                if os.path.isfile(full_path):
+
+                    relative_path = os.path.relpath(
+
+                        full_path,
+                        media_path
+
+                    )
+
+                    images.append(relative_path)
+
+                    timestamp = os.path.getmtime(full_path)
+
+                    dt = datetime.fromtimestamp(timestamp)
+
+                    file_dates.append(
+
+                        dt.strftime('%a')
+
+                    )
 
     total = len(images)
 
-    labels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+    labels = [
 
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+
+    ]
+
+    data_map = {
+
+        day: 0 for day in labels
+
+    }
+
+    for day in file_dates:
+
+        if day in data_map:
+
+            data_map[day] += 1
+
+    data = [
+
+        data_map[day] for day in labels
+
+    ]
+
+    recent_images = images[-6:][::-1]
+
+    return render(request, 'dashboard.html', {
+
+        'total': total,
+        'labels': labels,
+        'data': data,
+        'recent_images': recent_images
+
+    })
     # initialize counts
     data_map = {day: 0 for day in labels}
 
